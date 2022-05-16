@@ -9,18 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Install node modules
         run: |-
           npm install -g semantic-release \
-            @semantic-release/commit-analyzer \
             @semantic-release/exec \
-            @semantic-release/git \
-            @semantic-release/release-notes-generator
+            @semantic-release/git
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
