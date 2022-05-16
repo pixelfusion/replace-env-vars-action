@@ -9,7 +9,9 @@ if [ -z $FILENAME ]; then
 fi
 
 while IFS='=' read -r key value; do
+  keyReplace=$(printf '__%s__\n' "$key" | sed -e 's/[]\/$*.^[]/\\&/g')
+  valueReplace=$(printf '%s\n' "$value" | sed -e 's/[\/&]/\\&/g')
   echo "Setting $key to $value "
   echo $value | wc -l
-  sed -i "s|__$key__|$value|g" $FILENAME
+  sed -i "s/${keyReplace}/${valueReplace}/g" $FILENAME
 done < <(printenv)
