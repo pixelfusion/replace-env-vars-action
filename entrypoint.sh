@@ -8,8 +8,10 @@ if [ -z $FILENAME ]; then
   exit 1
 fi
 
-while IFS='=' read -r -a var; do
-  echo "Setting ${var[0]} to ${var[1]} "
-  echo ${var[1]} | wc -l
-  sed -i "s|__${var[0]}__|${var[1]}|g" $FILENAME
+while IFS='=' read -r key value; do
+  keyReplace=$(printf '__%s__\n' "$key" | sed -e 's/[]\/$*.^[]/\\&/g')
+  valueReplace=$(printf '%s\n' "$value" | sed -e 's/[\/&]/\\&/g')
+  valueLength=$(echo "$value" | wc -c)
+  echo "Setting $key with length $valueLength"
+  sed -i "s/${keyReplace}/${valueReplace}/g" $FILENAME
 done < <(printenv)
