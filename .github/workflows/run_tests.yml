@@ -1,11 +1,7 @@
 name: Tests
 on:
-  push:
-    branches:
-      - 'master'
-  pull_request:
-    branches:
-      - '**'
+  - push
+  - pull_request
 jobs:
   commit-lint:
     name: Lint commit
