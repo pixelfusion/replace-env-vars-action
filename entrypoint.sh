@@ -11,7 +11,7 @@ fi
 while IFS='=' read -r key value; do
   keyReplace=$(printf '__%s__\n' "$key" | sed -e 's/[]\/$*.^[]/\\&/g')
   valueReplace=$(printf '%s\n' "$value" | sed -e 's/[\/&]/\\&/g')
-  echo "Setting $key"
-  echo $value | wc -l
+  valueLength=$($value | wc -c)
+  echo "Setting $key with length $valueLength"
   sed -i "s/${keyReplace}/${valueReplace}/g" $FILENAME
 done < <(printenv)
